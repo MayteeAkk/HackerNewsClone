@@ -37,7 +37,12 @@ function updateNavOnLogin() {
 
 function navSubmitClick(evt){
   console.debug('navSubmitClick', evt);
+  hidePageComponents();
+  $allStoriesList.show();
+  $submittedStories.show();
 }
+
+$navSubmit.on('click', navSubmitClick);
 
 function navFavoriteClick(evt){
   console.debug('navFavoriteClick', evt);

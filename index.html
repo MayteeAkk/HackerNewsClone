@@ -56,7 +56,9 @@
 
   <!-- This is where all the new stories will go  -->
   <form class = 'hidden' id = 'new-story-form'>
-    
+    <label>author</label><input id = 'new-author' placeholder = 'author name'>
+    <label>title</label><input id = 'new-title' placeholder = 'article title'>
+    <label>url</label><input id = 'new-url' placeholder = 'url'>
   </form>
 
   <!-- loading message (removed by JS after stories loaded) -->
@@ -64,6 +66,12 @@
 
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
+
+  <!-- List of All User Stories -->
+  <ol id = 'user-stories-list' class = 'user-stories'></ol>
+
+  <!-- List of Favorite Stories -->
+  <ol id = 'favorite-stories-list' class = 'favorite-stories'></ol>
 
 </section>
 

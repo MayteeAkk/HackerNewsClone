@@ -50,3 +50,32 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Handles Submitting of a New Story */ 
+async function submitUserStory(e){
+  console.debug('submitUserStory');
+  e.preventDefault();
+
+  const newTitle = $('#new-title').val();
+  const newAuthor = $('#new-author').val();
+  const newURL = $('#new-url').val();
+  const username = currentUser.username;
+  const newStoryData = {newTitle, newURL, newAuthor, username};
+
+  const newStory = await storyList.addStory(currentUser, newStoryData);
+
+  const $story = generateStoryMarkup(newStory);
+  $allStoriesList.prepend($story);
+
+  $submittedStories.slideUp('slow');
+  $submittedStories.trigger('reset');
+
+}
+
+$submittedStories.on('submit', submitUserStory);
+
+function addNewStoriesToPage(){
+  console.debug('addNewStoriesToPage');
+
+  $ownStories.empty;
+}
