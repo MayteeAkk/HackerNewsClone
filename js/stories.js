@@ -15,16 +15,19 @@ async function getAndShowStoriesOnStart() {
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
- *
+ * - showDelete: shows the delete button if needed
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, showDelete = false) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  const showFav = Boolean(currentUser);
   return $(`
       <li id="${story.storyId}">
+        ${showDelete ? deleteButton() : ""}
+        ${showFav ? favoriteIcon(story, currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -79,3 +82,34 @@ function addNewStoriesToPage(){
 
   $ownStories.empty;
 }
+
+function deleteButton(){
+  return `
+      <span class = 'delete-button'>
+        <i class="fas fa-trash"></i>
+      </span>
+        `;
+}
+
+function favoriteIcon(story, user){
+  const isFav = user.isFavorite(story);
+  const icon = isFav ? 'fas' : 'far'
+  return `
+      <span class = 'fav'>
+        <i class="${icon} fa-bookmark"></i>
+      </span>
+        `;
+}
+
+async function delStory(e){
+  console.debug('delStory');
+
+  const $storyDeleted = $(e.target).closest('li');
+  const storyID = $storyDeleted.attr('id');
+
+  await storyList.removeStory(currentUser, storyID);
+
+  await addNewStoriesToPage();
+}
+
+$userStories.on('click', '.delete-button', delStory)
