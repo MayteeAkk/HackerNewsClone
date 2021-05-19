@@ -80,8 +80,15 @@ $submittedStories.on('submit', submitUserStory);
 function addNewStoriesToPage(){
   console.debug('addNewStoriesToPage');
 
-  $ownStories.empty;
+  $userStories.empty;
+
+  for(let story of currentUser.ownStories){
+    let $story = generateStoryMarkup(story, true);
+    $userStories.append($story);
+  }
 }
+
+$userStories.show();
 
 function deleteButton(){
   return `
@@ -93,7 +100,7 @@ function deleteButton(){
 
 function favoriteIcon(story, user){
   const isFav = user.isFavorite(story);
-  const icon = isFav ? 'fas' : 'far'
+  const icon = isFav ? 'fas' : 'far';
   return `
       <span class = 'fav'>
         <i class="${icon} fa-bookmark"></i>
@@ -113,3 +120,37 @@ async function delStory(e){
 }
 
 $userStories.on('click', '.delete-button', delStory)
+
+async function toggleFav(e){
+  console.debug('toggleFav');
+
+  const $storyChosen = $(e.target);
+  const $closest = $storyChosen.closest('li');
+  const storyID = $closest.attr('id');
+  const story = storyList.stories.find(tempStory => {
+    tempStory.storyId == storyID
+  });
+
+  if($storyChosen.hasClass('fas')){
+    await currentUser.removeFavoriteStory(story);
+    $storyChosen.closest('i').toggleClass('fas far');
+  }
+  else{
+    await currentUser.favoriteStory(story);
+    $storyChosen.closest('i').toggleClass('fas far');
+  }
+}
+
+$allStoriesList.on('click', '.fav', toggleFav);
+
+function displayFavorites(){
+  console.debug('displayFavorites');
+  $favStories.empty();
+
+  for(let story of currentUser.favorites){
+    const $chosenStory = generateStoryMarkup(story);
+    $favStories.append($chosenStory);
+  }
+
+  $favStories.show();
+}

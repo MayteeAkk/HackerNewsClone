@@ -46,8 +46,20 @@ $navSubmit.on('click', navSubmitClick);
 
 function navFavoriteClick(evt){
   console.debug('navFavoriteClick', evt);
+  hidePageComponents();
+  displayFavorites();
 }
 
+$body.on('click', '#nav-favorites', navFavoriteClick);
+
 function navMyStoryClick(evt){
-  console.debug('navMyStoryClick', evt)
+  console.debug('navMyStoryClick', evt);
+  hidePageComponents();
+  addNewStoriesToPage();
+  $userStories.show();
 }
+
+$body.on('click', '#nav-my-stories', navMyStoryClick);
+
+
+

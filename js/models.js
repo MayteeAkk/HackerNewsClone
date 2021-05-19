@@ -223,6 +223,7 @@ class User {
       );
     } catch (err) {
       console.error("loginViaStoredCredentials failed", err);
+      // alert('Log In has failed, Incorrect Password or Username')
       return null;
     }
   }
@@ -250,13 +251,14 @@ class User {
   //Add to Favorites List
   async favoriteStory(story){
     this.favorites.push(story);
-    await this.alternateFavorite('remove', story);
+    await this.alternateFavorite('add', story);
   }
 
   //Remove from Favorites List  
   async removeFavoriteStory(story){
-    this.favorites = this.favorites.filter(function(tempStory){
-      return tempStory.storyId != story.storyId;
-    })
+    this.favorites = this.favorites.filter(tempStory => {
+      tempStory.storyId != story.storyId
+    });
+    await this.alternateFavorite('remove', story);
   }
 }
